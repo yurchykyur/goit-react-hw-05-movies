@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Link, Outlet, useParams } from 'react-router-dom';
+import { Link, Outlet, useLocation, useParams } from 'react-router-dom';
 
 import serviceTmdbAPI from '../components/Services/tmdbAPI';
 import { Loader } from 'components/Loader/Loader';
@@ -10,12 +10,13 @@ const MovieDetails = () => {
   const [error, setError] = useState(true);
   const [isLoading, setIsloading] = useState(true);
   const { movieId } = useParams();
+  const location = useLocation();
+  console.log(location);
 
   useEffect(() => {
     function fetchTendingItems(movieId) {
       serviceTmdbAPI(`movie/${movieId}`)
         .then(data => {
-          console.log(data);
           setMovieItem({ ...data });
           setGenres([...data.genres]);
         })
@@ -34,6 +35,7 @@ const MovieDetails = () => {
   return (
     <>
       {isLoading && <Loader />}
+      <Link to={location.state.from}>--- Go back</Link>
       {!error && (
         <div>
           <div>
@@ -56,9 +58,13 @@ const MovieDetails = () => {
 
               <h3>Genres</h3>
               <p>
-                {genres.map(genre => {
-                  return <span key={genre.name}>{genre.name}</span>;
-                })}
+                {genres.length !== 0 ? (
+                  genres.map(genre => {
+                    return <span key={genre.name}>{genre.name}</span>;
+                  })
+                ) : (
+                  <span>Unknown genre</span>
+                )}
               </p>
             </div>
           </div>

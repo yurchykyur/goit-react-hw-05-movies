@@ -14,7 +14,6 @@ export const Cast = () => {
     function fetchCastItems(movieId) {
       serviceTmdbAPI(`movie/${movieId}/credits`)
         .then(data => {
-          console.log(data);
           setCastItems([...data.cast]);
         })
         .catch(error => {

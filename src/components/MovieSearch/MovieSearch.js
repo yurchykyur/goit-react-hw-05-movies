@@ -1,42 +1,51 @@
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 import { FaSistrix } from 'react-icons/fa';
+import { useSearchParams } from 'react-router-dom';
 import { toast } from 'react-toastify';
 
 export const MovieSearchBar = props => {
-  const [searchQuery, setSearchQuery] = useState('');
   const [prevSearchQuery, setPrevSearchQuery] = useState('');
+  const [searchParams, setSearchParams] = useSearchParams();
+  const findMovie = searchParams.get('findMovie') ?? '';
 
-  const handleInputChange = e => {
-    const { value } = e.currentTarget;
-    setSearchQuery(value.toLowerCase().trim());
-  };
+  const isFirstLoad = useRef(true);
 
-  const reset = () => {
-    setSearchQuery('');
+  const updateQueryString = e => {
+    if (e.currentTarget.value === '') {
+      return setSearchParams({});
+    }
+
+    setSearchParams({ findMovie: e.currentTarget.value });
   };
 
   const handleFormSubmit = e => {
     e.preventDefault();
-    console.log(searchQuery);
 
-    if (!searchQuery) {
+    if (!findMovie) {
       toast.info('Please write search query.');
       return;
     }
 
-    if (searchQuery === prevSearchQuery) {
+    if (findMovie === prevSearchQuery) {
       toast.info(
-        `"${searchQuery}" search completed. Enter a different search query`
+        `"${findMovie}" search completed. Enter a different search query`
       );
-      reset();
       return;
     }
 
-    setPrevSearchQuery(searchQuery);
-    props.formSubmitHandler(searchQuery);
-    reset();
+    setPrevSearchQuery(findMovie);
+    props.formSubmitHandler(findMovie);
+    console.log(e);
   };
+
+  useEffect(() => {
+    if (findMovie && isFirstLoad.current) {
+      isFirstLoad.current = false;
+      setPrevSearchQuery(findMovie);
+      props.formSubmitHandler(findMovie);
+    }
+  }, [setPrevSearchQuery, props, findMovie, isFirstLoad]);
 
   return (
     <div>
@@ -47,8 +56,8 @@ export const MovieSearchBar = props => {
           autoComplete="off"
           autoFocus
           placeholder="Search movie"
-          onChange={handleInputChange}
-          value={searchQuery}
+          onChange={updateQueryString}
+          value={findMovie}
         />
         <button type="submit">
           <FaSistrix style={{ width: 20, height: 20 }} />

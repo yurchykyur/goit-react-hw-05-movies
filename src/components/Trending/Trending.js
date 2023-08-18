@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 
 import serviceTmdbAPI from '../Services/tmdbAPI';
 import { Loader } from 'components/Loader/Loader';
@@ -8,6 +8,7 @@ export const Trending = () => {
   const [trendingItems, setTrendingItems] = useState([]);
   const [isLoading, setIsloading] = useState(true);
   const [error, setError] = useState(true);
+  const location = useLocation();
 
   useEffect(() => {
     function fetchTendingItems() {
@@ -37,7 +38,7 @@ export const Trending = () => {
             {trendingItems.map(item => {
               return (
                 <li key={item.id}>
-                  <Link to={`movies/${item.id}`}>
+                  <Link to={`movies/${item.id}`} state={{ from: location }}>
                     {item.title || item.name}
                   </Link>
                 </li>

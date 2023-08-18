@@ -14,7 +14,6 @@ export const Reviews = () => {
     function fetchReviewsItems(movieId) {
       serviceTmdbAPI(`movie/${movieId}/reviews`)
         .then(data => {
-          console.log(data);
           setReviewsItems([...data.results]);
         })
         .catch(error => {
@@ -35,14 +34,20 @@ export const Reviews = () => {
       {isLoading && <Loader />}
       {!error && (
         <ul>
-          {reviewsItems.map(item => {
-            return (
-              <li key={item.id}>
-                <h2>Author: {item.author}</h2>
-                <p>{item.content}</p>
-              </li>
-            );
-          })}
+          {reviewsItems.length !== 0 ? (
+            reviewsItems.map(item => {
+              return (
+                <li key={item.id}>
+                  <h2>Author: {item.author}</h2>
+                  <p>{item.content}</p>
+                </li>
+              );
+            })
+          ) : (
+            <li>
+              <p>We don't have any reviews for this movie.</p>
+            </li>
+          )}
         </ul>
       )}
     </div>

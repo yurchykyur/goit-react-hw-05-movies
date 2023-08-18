@@ -21,7 +21,6 @@ const Movies = () => {
 
       serviceTmdbAPI('search/movie', { query: searchQuery })
         .then(data => {
-          console.log(data);
           setSearchItems([...data.results]);
         })
         .catch(error => {
