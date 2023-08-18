@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 
 import { FaSistrix } from 'react-icons/fa';
 import { toast } from 'react-toastify';

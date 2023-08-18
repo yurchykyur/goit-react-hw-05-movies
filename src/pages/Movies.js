@@ -1,5 +1,4 @@
 import { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
 
 import { MovieSearchBar } from '../components/MovieSearch/MovieSearch';
 import { Loader } from 'components/Loader/Loader';
