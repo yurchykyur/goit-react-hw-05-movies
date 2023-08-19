@@ -14,7 +14,6 @@ export const Trending = () => {
     function fetchTendingItems() {
       serviceTmdbAPI('trending/all/day')
         .then(data => {
-          console.log(data);
           setTrendingItems([...data.results]);
         })
         .catch(error => {

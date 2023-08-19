@@ -5,6 +5,7 @@ import { useSearchParams } from 'react-router-dom';
 import { toast } from 'react-toastify';
 
 export const MovieSearchBar = props => {
+  const [searchQuery, setSearchQuery] = useState('');
   const [prevSearchQuery, setPrevSearchQuery] = useState('');
   const [searchParams, setSearchParams] = useSearchParams();
   const findMovie = searchParams.get('findMovie') ?? '';
@@ -12,39 +13,43 @@ export const MovieSearchBar = props => {
   const isFirstLoad = useRef(true);
 
   const updateQueryString = e => {
-    if (e.currentTarget.value === '') {
-      return setSearchParams({});
+    const value = e.currentTarget.value;
+    if (value === '') {
+      setSearchQuery('');
+      setSearchParams({});
+      return;
     }
 
-    setSearchParams({ findMovie: e.currentTarget.value });
+    setSearchParams({ findMovie: value });
+    setSearchQuery(value);
   };
 
   const handleFormSubmit = e => {
     e.preventDefault();
 
-    if (!findMovie) {
+    if (!searchQuery) {
       toast.info('Please write search query.');
       return;
     }
 
-    if (findMovie === prevSearchQuery) {
+    if (searchQuery === prevSearchQuery) {
       toast.info(
-        `"${findMovie}" search completed. Enter a different search query`
+        `"${searchQuery}" search completed. Enter a different search query`
       );
       return;
     }
 
-    setPrevSearchQuery(findMovie);
-    props.formSubmitHandler(findMovie);
-    console.log(e);
+    setPrevSearchQuery(searchQuery);
+    props.formSubmitHandler(searchQuery);
+    setSearchQuery('');
   };
 
   useEffect(() => {
     if (findMovie && isFirstLoad.current) {
-      isFirstLoad.current = false;
       setPrevSearchQuery(findMovie);
       props.formSubmitHandler(findMovie);
     }
+    isFirstLoad.current = false;
   }, [setPrevSearchQuery, props, findMovie, isFirstLoad]);
 
   return (
@@ -57,7 +62,7 @@ export const MovieSearchBar = props => {
           autoFocus
           placeholder="Search movie"
           onChange={updateQueryString}
-          value={findMovie}
+          value={searchQuery}
         />
         <button type="submit">
           <FaSistrix style={{ width: 20, height: 20 }} />

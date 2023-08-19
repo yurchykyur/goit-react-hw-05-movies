@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import { Link, Outlet, useLocation, useParams } from 'react-router-dom';
 
 import serviceTmdbAPI from '../components/Services/tmdbAPI';
@@ -11,7 +11,7 @@ const MovieDetails = () => {
   const [isLoading, setIsloading] = useState(true);
   const { movieId } = useParams();
   const location = useLocation();
-  console.log(location);
+  const backLinkLocationRef = useRef(location.state?.from ?? '/movies');
 
   useEffect(() => {
     function fetchTendingItems(movieId) {
@@ -35,7 +35,7 @@ const MovieDetails = () => {
   return (
     <>
       {isLoading && <Loader />}
-      <Link to={location.state.from}>--- Go back</Link>
+      <Link to={backLinkLocationRef.current}>--- Go back</Link>
       {!error && (
         <div>
           <div>
