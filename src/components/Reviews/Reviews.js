@@ -2,13 +2,11 @@ import { useParams } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 
 import serviceTmdbAPI from '../Services/tmdbAPI';
-import { Loader } from 'components/Loader/Loader';
 
-export const Reviews = () => {
+export default function Reviews() {
   const { movieId } = useParams();
   const [reviewsItems, setReviewsItems] = useState([]);
   const [error, setError] = useState(true);
-  const [isLoading, setIsloading] = useState(true);
 
   useEffect(() => {
     function fetchReviewsItems(movieId) {
@@ -22,7 +20,6 @@ export const Reviews = () => {
         })
         .finally(() => {
           setError(false);
-          setIsloading(false);
         });
     }
 
@@ -31,7 +28,6 @@ export const Reviews = () => {
 
   return (
     <div>
-      {isLoading && <Loader />}
       {!error && (
         <ul>
           {reviewsItems.length !== 0 ? (
@@ -52,4 +48,4 @@ export const Reviews = () => {
       )}
     </div>
   );
-};
+}

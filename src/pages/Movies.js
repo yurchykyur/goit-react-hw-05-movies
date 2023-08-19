@@ -17,7 +17,7 @@ const Movies = () => {
     }
     function fetchGalleryItems(searchQuery) {
       setLoading(true);
-      setError(false);
+      setError(true);
 
       serviceTmdbAPI('search/movie', { query: searchQuery })
         .then(data => {

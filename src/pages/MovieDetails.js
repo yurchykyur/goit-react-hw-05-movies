@@ -1,4 +1,4 @@
-import { useEffect, useState, useRef } from 'react';
+import { useEffect, useState, useRef, Suspense } from 'react';
 import { Link, Outlet, useLocation, useParams } from 'react-router-dom';
 
 import serviceTmdbAPI from '../components/Services/tmdbAPI';
@@ -8,7 +8,6 @@ const MovieDetails = () => {
   const [movieItem, setMovieItem] = useState({});
   const [genres, setGenres] = useState([]);
   const [error, setError] = useState(true);
-  const [isLoading, setIsloading] = useState(true);
   const { movieId } = useParams();
   const location = useLocation();
   const backLinkLocationRef = useRef(location.state?.from ?? '/movies');
@@ -26,7 +25,6 @@ const MovieDetails = () => {
         })
         .finally(() => {
           setError(false);
-          setIsloading(false);
         });
     }
     fetchTendingItems(movieId);
@@ -34,7 +32,6 @@ const MovieDetails = () => {
 
   return (
     <>
-      {isLoading && <Loader />}
       <Link to={backLinkLocationRef.current}>--- Go back</Link>
       {!error && (
         <div>
@@ -68,7 +65,6 @@ const MovieDetails = () => {
               </p>
             </div>
           </div>
-
           <h3>Additionsl information</h3>
           <ul>
             <li>
@@ -78,8 +74,9 @@ const MovieDetails = () => {
               <Link to="Reviews">Reviews</Link>
             </li>
           </ul>
-
-          <Outlet />
+          <Suspense fallback={<Loader />}>
+            <Outlet />
+          </Suspense>{' '}
         </div>
       )}
     </>

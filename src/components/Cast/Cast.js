@@ -2,13 +2,11 @@ import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 
 import serviceTmdbAPI from '../Services/tmdbAPI';
-import { Loader } from 'components/Loader/Loader';
 
-export const Cast = () => {
+export default function Cast() {
   const { movieId } = useParams();
   const [castItems, setCastItems] = useState([]);
   const [error, setError] = useState(true);
-  const [isLoading, setIsloading] = useState(true);
 
   useEffect(() => {
     function fetchCastItems(movieId) {
@@ -22,7 +20,6 @@ export const Cast = () => {
         })
         .finally(() => {
           setError(false);
-          setIsloading(false);
         });
     }
 
@@ -31,7 +28,6 @@ export const Cast = () => {
 
   return (
     <div>
-      {isLoading && <Loader />}
       {!error && (
         <ul>
           {castItems.map(item => {
@@ -59,4 +55,4 @@ export const Cast = () => {
       )}
     </div>
   );
-};
+}

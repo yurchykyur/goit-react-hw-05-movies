@@ -1,6 +1,9 @@
+import { Suspense } from 'react';
 import { NavLink, Outlet } from 'react-router-dom';
+
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { Loader } from 'components/Loader/Loader';
 
 export const Layout = () => {
   return (
@@ -14,7 +17,9 @@ export const Layout = () => {
         </li>
       </ul>
       <main>
-        <Outlet />
+        <Suspense fallback={<Loader />}>
+          <Outlet />
+        </Suspense>
         <ToastContainer />
       </main>
     </div>
