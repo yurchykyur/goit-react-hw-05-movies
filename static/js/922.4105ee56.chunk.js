@@ -1,0 +1,2 @@
+"use strict";(self.webpackChunkreact_homework_template=self.webpackChunkreact_homework_template||[]).push([[922],{922:function(t,e,n){n.r(e);var o=n(184);e.default=function(){return(0,o.jsx)("div",{children:(0,o.jsx)("img",{src:"https://hostiq.ua/wiki/wp-content/uploads/2021/05/03-error-404-not-found-1.png",alt:"Page not found",width:"1000px"})})}}}]);
+//# sourceMappingURL=922.4105ee56.chunk.js.map
