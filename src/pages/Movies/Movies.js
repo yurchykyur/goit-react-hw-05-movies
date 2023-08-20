@@ -1,0 +1,53 @@
+import { useEffect, useState } from 'react';
+
+import { MovieSearchBar } from '../../components/MovieSearch/MovieSearch';
+import { Loader } from 'components/Loader/Loader';
+import serviceTmdbAPI from '../../components/Services/tmdbAPI';
+import { SearchItems } from '../../components/SearchItems/SearchItems';
+
+const Movies = () => {
+  const [searchQuery, setSearchQuery] = useState('');
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(true);
+  const [searchItems, setSearchItems] = useState([]);
+
+  useEffect(() => {
+    if (!searchQuery) {
+      return;
+    }
+    function fetchGalleryItems(searchQuery) {
+      setLoading(true);
+      setError(true);
+
+      serviceTmdbAPI('search/movie', { query: searchQuery })
+        .then(data => {
+          setSearchItems([...data.results]);
+        })
+        .catch(error => {
+          console.error(error);
+          setLoading(false);
+          setError(true);
+        })
+        .finally(() => {
+          setLoading(false);
+          setError(false);
+        });
+    }
+
+    fetchGalleryItems(searchQuery);
+  }, [searchQuery]);
+
+  const handlerSearchQuery = searchQuery => {
+    setSearchQuery(searchQuery);
+  };
+
+  return (
+    <div>
+      <MovieSearchBar formSubmitHandler={handlerSearchQuery} />
+      {loading && <Loader />}
+      <ul>{!error && <SearchItems items={searchItems} />}</ul>
+    </div>
+  );
+};
+
+export default Movies;

@@ -5,23 +5,26 @@ import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { Loader } from 'components/Loader/Loader';
 
+import { Container, NavList, NavLiItem } from './Layout.styled';
+
 export const Layout = () => {
   return (
-    <div>
-      <ul>
-        <li>
+    <Container>
+      <NavList>
+        <NavLiItem>
           <NavLink to="/">Home</NavLink>
-        </li>
-        <li>
+        </NavLiItem>
+
+        <NavLiItem>
           <NavLink to="/movies">Movies</NavLink>
-        </li>
-      </ul>
+        </NavLiItem>
+      </NavList>
       <main>
         <Suspense fallback={<Loader />}>
           <Outlet />
         </Suspense>
         <ToastContainer />
       </main>
-    </div>
+    </Container>
   );
 };

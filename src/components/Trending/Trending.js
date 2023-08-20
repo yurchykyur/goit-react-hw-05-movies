@@ -3,6 +3,7 @@ import { Link, useLocation } from 'react-router-dom';
 
 import serviceTmdbAPI from '../Services/tmdbAPI';
 import { Loader } from 'components/Loader/Loader';
+import { Title, Wrapper, Item } from './Trending.styled';
 
 export const Trending = () => {
   const [trendingItems, setTrendingItems] = useState([]);
@@ -31,20 +32,20 @@ export const Trending = () => {
     <>
       {isLoading && <Loader />}
       {!error && (
-        <div>
-          <h2>Trending today</h2>
+        <Wrapper>
+          <Title>Trending today</Title>
           <ul>
             {trendingItems.map(item => {
               return (
-                <li key={item.id}>
+                <Item key={item.id}>
                   <Link to={`movies/${item.id}`} state={{ from: location }}>
                     {item.title || item.name}
                   </Link>
-                </li>
+                </Item>
               );
             })}
           </ul>
-        </div>
+        </Wrapper>
       )}
     </>
   );
